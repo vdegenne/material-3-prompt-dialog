@@ -19,60 +19,62 @@ try {
   await prompt({
     headline: 'Are you sure?',
     content: 'are you sure you want to delete this item?',
-    {/* confirm button options */},
-  })
+    confirmButton: {
+      /* confirm button options */
+    },
+  });
   // was confirmed, do something...
 } catch (_) {
   // was canceled
 }
 ```
 
-### Dialog options
+### PromptOptions
 
 ```typescript
 {
   /**
    * Headline of the dialog.
    */
-  headline?: string | TemplateResult;
+  headline?: string | TemplateResult,
   /**
    * Content of the dialog.
    */
-  content: string | TemplateResult;
+  content: string | TemplateResult,
   /**
    * Confirm button options.
    */
-  confirmButton?: PromptButton;
+  confirmButton?: PromptButton,
   /**
    * Cancel button options.
    */
-  cancelButton?: PromptButton;
+  cancelButton?: PromptButton,
 }
 ```
 
-### Button options
+### PromptButton (options)
 
 ```typescript
 {
   /**
    * The label of the button.
    */
-  label?: string;
+  label?: string,
   /**
    * The dialog action that the button emits when clicked.
    */
-  dialogAction?: string;
+  dialogAction?: string,
   /**
    * Option callback to execute when the button is clicked.
    * @param {MdDialog} dialog dialog host
    * @returns void
    */
-  callback?: (dialog: MdDialog) => void;
+  callback?: (dialog: MdDialog) => void,
   /**
    * The default tagname to be used for the button.
    * @default 'md-text-button'
    */
-  buttonType?: string;
+  buttonType?: string,
 }
 ```
 
