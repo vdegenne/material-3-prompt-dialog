@@ -49,6 +49,10 @@ try {
    * Cancel button options.
    */
   cancelButton?: PromptButton,
+  /**
+	* Transition of the dialog.
+	*/
+  transition?: 'grow'|'shrink'|'grow-down'|'grow-up'|'grow-left'|'grow-right';
 }
 ```
 
@@ -69,7 +73,7 @@ try {
    * @param {MdDialog} dialog dialog host
    * @returns void
    */
-  callback?: (dialog: MdDialog) => void,
+  callback?: (dialog?: MdDialog) => void,
   /**
    * The default tagname to be used for the button.
    * @default 'md-text-button'

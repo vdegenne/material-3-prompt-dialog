@@ -5,6 +5,31 @@ import {MdDialog} from '@material/web/dialog/dialog.js';
 import '@material/web/dialog/dialog.js';
 import '@material/web/button/text-button.js';
 
+export interface PromptOptions {
+  /**
+   * Headline of the dialog.
+   */
+  headline?: string | TemplateResult;
+  /**
+   * Content of the dialog.
+   */
+  content: string | TemplateResult;
+  /**
+   * Confirm button options.
+   */
+  confirmButton?: PromptButton;
+  /**
+   * Cancel button options.
+   */
+  cancelButton?: PromptButton;
+  /**
+   * Transition of the dialog.
+   * @type {import('@material/web/dialog/dialog.js').MdDialog['transition']}
+   * @default 'grow-down'
+   */
+  transition?: MdDialog['transition'];
+}
+
 export interface PromptButton {
   /**
    * The label of the button.
@@ -23,7 +48,7 @@ export interface PromptButton {
    * @param {MdDialog} dialog dialog host
    * @returns void
    */
-  callback?: (dialog: MdDialog) => void;
+  callback?: (dialog?: MdDialog) => void;
   /**
    * The default tagname to be used for the button.
    * @default 'md-text-button'
@@ -31,30 +56,12 @@ export interface PromptButton {
   buttonType?: string;
 }
 
-export interface PromptOptions {
-  /**
-   * Headline of the dialog.
-   */
-  headline?: string | TemplateResult;
-  /**
-   * Content of the dialog.
-   */
-  content: string | TemplateResult;
-  /**
-   * Confirm button options.
-   */
-  confirmButton?: PromptButton;
-  /**
-   * Cancel button options.
-   */
-  cancelButton?: PromptButton;
-}
-
 export function prompt({
   headline,
   content,
   cancelButton,
   confirmButton,
+  transition,
 }: PromptOptions) {
   return new Promise(async (resolve, reject) => {
     const dialogref = createRef<MdDialog>();
@@ -67,6 +74,7 @@ export function prompt({
         <md-dialog
           escapeKeyAction="cancel"
           scrimClickAction="cancel"
+          transition=${transition ?? 'grow-down'}
           open
           ${ref(dialogref)}
           @closed=${(e) => {
