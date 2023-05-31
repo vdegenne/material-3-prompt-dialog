@@ -75,3 +75,7 @@ try {
 	buttonType?: string;
 }
 ```
+
+## License
+
+MIT (c) 2023 Valentin Degenne
