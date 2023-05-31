@@ -34,7 +34,7 @@ try {
   /**
    * Headline of the dialog.
    */
-  headline?: string;
+  headline?: string | TemplateResult;
   /**
    * Content of the dialog.
    */
