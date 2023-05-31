@@ -1,0 +1,22 @@
+{
+	"name": "material-3-prompt-dialog",
+	"description": "MWC 3 prompt dialog utility function",
+	"version": "0.0.2",
+	"main": "lib/index.js",
+	"module": "lib/index.js",
+	"type": "module",
+	"scripts": {
+		"dev": "vite dev/ --host",
+		"build": "tsc --pretty"
+	},
+	"devDependencies": {
+		"@material/web": "^1.0.0-pre.9",
+		"lit-html": "^2.7.4",
+		"typescript": "^5.0.4",
+		"vite": "^4.3.9"
+	},
+	"files": [
+		"/lib",
+		"!/lib/dev"
+	]
+}
