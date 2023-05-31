@@ -1,22 +1,35 @@
 {
-	"name": "material-3-prompt-dialog",
-	"description": "MWC 3 prompt dialog utility function",
-	"version": "0.0.2",
-	"main": "lib/index.js",
-	"module": "lib/index.js",
-	"type": "module",
-	"scripts": {
-		"dev": "vite dev/ --host",
-		"build": "tsc --pretty"
-	},
-	"devDependencies": {
-		"@material/web": "^1.0.0-pre.9",
-		"lit-html": "^2.7.4",
-		"typescript": "^5.0.4",
-		"vite": "^4.3.9"
-	},
-	"files": [
-		"/lib",
-		"!/lib/dev"
-	]
+  "name": "material-3-prompt-dialog",
+  "description": "MWC 3 prompt dialog utility function",
+  "version": "0.0.3",
+  "main": "lib/index.js",
+  "module": "lib/index.js",
+  "license": "MIT",
+  "author": {
+    "name": "vdegenne",
+    "url": "https://github.com/vdegenne"
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "vite dev/ --host",
+    "build": "tsc --pretty",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "@material/web": "^1.0.0-pre.9",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.2",
+    "lit-html": "^2.7.4",
+    "prettier": "^2.8.8",
+    "typescript": "^5.0.4",
+    "vite": "^4.3.9"
+  },
+  "files": [
+    "/lib",
+    "!/lib/dev",
+    "screenshot.png"
+  ],
+  "lint-staged": {
+    "**/*.{cjs,html,js,json,md,ts}": "prettier --single-quote --no-bracket-spacing --write"
+  }
 }
