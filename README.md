@@ -2,7 +2,7 @@
 
 Small prompt dialog utility function written in Material-web 3
 
-![screenshot](./screenshot.png)
+![screenshot](https://github.com/vdegenne/material-3-prompt-dialog/blob/master/screenshot.png)
 
 ## Installation
 
