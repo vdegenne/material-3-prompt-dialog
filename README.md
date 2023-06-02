@@ -62,8 +62,8 @@ try {
    */
   cancelButton?: PromptButton,
   /**
-	* Transition of the dialog.
-	*/
+   * Transition of the dialog.
+   */
   transition?: 'grow'|'shrink'|'grow-down'|'grow-up'|'grow-left'|'grow-right';
 }
 ```
