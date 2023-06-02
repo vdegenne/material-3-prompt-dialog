@@ -10,6 +10,18 @@ Small prompt dialog utility function written in Material-web 3
 npm add -D material-3-prompt-dialog
 ```
 
+This package doesn't rely on a specific version of `md-dialog` to avoid conflict within your project, so you will also need to install `@material/web` if not already there, and importing the elements you'd like to use
+
+```bash
+npm add -D @material/web
+```
+
+```typescript
+import '@material/web/dialog/dialog.js'; // required
+import '@material/web/button/text-button.js'; // default button
+// import any other buttons you'd like to use.
+```
+
 ## Usage
 
 ```typescript
@@ -23,9 +35,9 @@ try {
       /* confirm button options */
     },
   });
-  // was confirmed, do something...
+  // dialog was confirmed, do something...
 } catch (_) {
-  // was canceled
+  // dialog was canceled
 }
 ```
 
