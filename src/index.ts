@@ -34,7 +34,7 @@ export interface PromptButton {
   /**
    * The label of the button.
    */
-  label?: string;
+  label?: string | TemplateResult;
   /**
    * Additional styles for the button.
    */

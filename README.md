@@ -75,7 +75,7 @@ try {
   /**
    * The label of the button.
    */
-  label?: string,
+  label?: string | TemplateResult,
   /**
    * The dialog action that the button emits when clicked.
    */
