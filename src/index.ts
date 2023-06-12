@@ -71,7 +71,8 @@ export function prompt(
 
     document.body.appendChild(container);
 
-    let callbackPromise: Promise<any> = Promise.resolve();
+    let cancelCallbackPromise: Promise<any> = Promise.resolve();
+    let confirmCallbackPromise: Promise<any> = Promise.resolve();
 
     render(
       html`
@@ -82,19 +83,17 @@ export function prompt(
           transition=${transition ?? 'grow-down'}
           open
           @closed=${async (e) => {
-            const callbackResult = await callbackPromise;
             switch (e.detail.action) {
               case 'cancel':
-                await callbackPromise;
                 // TODO: reactivate following if need the action somehow
                 // reject(callbackResult ?? e.detail.action);
-                reject(callbackResult);
+                reject(await cancelCallbackPromise);
                 break;
               case 'confirm':
               default:
                 // TODO: reactivate following if need the action somehow
                 // resolve(callbackResult ?? e.detail.action);
-                resolve(callbackResult);
+                resolve(await confirmCallbackPromise);
             }
             dialogref.value.remove();
             container.remove();
@@ -116,7 +115,7 @@ export function prompt(
                       if (cancelButton.callback == undefined) {
                         return;
                       }
-                      callbackPromise = new Promise(async (resolve) => {
+                      cancelCallbackPromise = new Promise(async (resolve) => {
                         resolve(await cancelButton.callback(dialogref.value));
                       });
                     }}
@@ -140,7 +139,7 @@ export function prompt(
                       if (confirmButton.callback == undefined) {
                         return;
                       }
-                      callbackPromise = new Promise(async (resolve) => {
+                      confirmCallbackPromise = new Promise(async (resolve) => {
                         resolve(await confirmButton.callback(dialogref.value));
                       });
                     }}
