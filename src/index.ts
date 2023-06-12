@@ -48,7 +48,7 @@ export interface PromptButton {
    * @param {MdDialog} dialog dialog host
    * @returns void
    */
-  callback?: (dialog?: MdDialog) => void;
+  callback?: (dialog?: MdDialog) => void | Promise<any>;
   /**
    * The default tagname to be used for the button.
    * @default 'md-text-button'
@@ -56,36 +56,45 @@ export interface PromptButton {
   buttonType?: string;
 }
 
-export function prompt({
-  headline,
-  content,
-  cancelButton,
-  confirmButton,
-  transition,
-}: PromptOptions) {
+export function prompt(
+  {
+    headline,
+    content = '',
+    cancelButton,
+    confirmButton,
+    transition,
+  }: PromptOptions = {content: ''}
+) {
   return new Promise(async (resolve, reject) => {
     const dialogref = createRef<MdDialog>();
     const container = document.createElement('div');
 
     document.body.appendChild(container);
 
+    let callbackPromise: Promise<any> = Promise.resolve();
+
     render(
       html`
         <md-dialog
+          ${ref(dialogref)}
           escapeKeyAction="cancel"
           scrimClickAction="cancel"
           transition=${transition ?? 'grow-down'}
           open
-          ${ref(dialogref)}
-          @closed=${(e) => {
+          @closed=${async (e) => {
+            const callbackResult = await callbackPromise;
             switch (e.detail.action) {
               case 'cancel':
-                reject(e.detail.action);
-                // resolve(e.detail.action);
+                await callbackPromise;
+                // TODO: reactivate following if need the action somehow
+                // reject(callbackResult ?? e.detail.action);
+                reject(callbackResult);
                 break;
               case 'confirm':
               default:
-                resolve(e.detail.action);
+                // TODO: reactivate following if need the action somehow
+                // resolve(callbackResult ?? e.detail.action);
+                resolve(callbackResult);
             }
             dialogref.value.remove();
             container.remove();
@@ -103,7 +112,14 @@ export function prompt({
                 return staticHtml`
 									<${button}
 										slot="footer"
-										@click=${() => cancelButton.callback?.(dialogref.value)}
+										@click=${() => {
+                      if (cancelButton.callback == undefined) {
+                        return;
+                      }
+                      callbackPromise = new Promise(async (resolve) => {
+                        resolve(await cancelButton.callback(dialogref.value));
+                      });
+                    }}
 										dialogAction="${cancelButton.dialogAction ?? 'cancel'}"
 										>${cancelButton.label ?? 'Cancel'}</${button}
 									>
@@ -120,7 +136,14 @@ export function prompt({
                 return staticHtml`
 									<${button}
 										slot="footer"
-										@click=${() => confirmButton.callback?.(dialogref.value)}
+										@click=${() => {
+                      if (confirmButton.callback == undefined) {
+                        return;
+                      }
+                      callbackPromise = new Promise(async (resolve) => {
+                        resolve(await confirmButton.callback(dialogref.value));
+                      });
+                    }}
 										dialogAction="${confirmButton.dialogAction ?? 'confirm'}"
 										>${confirmButton.label ?? 'Confirm'}</${button}
 									>
