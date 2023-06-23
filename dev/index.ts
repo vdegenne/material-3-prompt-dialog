@@ -10,7 +10,7 @@ try {
     content: html`are you sure you want to delete this item?
       <b id="bold">test</b>`,
     escapeKeyAction: '',
-    onDialogOpen(dialog) {
+    onDialogReady(dialog) {
       dialog.$.bold.setAttribute('style', 'background-color:green');
     },
     confirmButton: {

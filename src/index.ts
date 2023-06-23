@@ -33,11 +33,11 @@ export interface PromptOptions {
   transition?: MdDialog['transition'];
 
   /**
-   * Callback when the dialog first renders
+   * Callback when the dialog content is ready (before it opens).
    *
    * @param dialog the prompt dialog
    */
-  onDialogOpen?: (dialog: AugmentedMdDialog) => void;
+  onDialogReady?: (dialog: AugmentedMdDialog) => void;
 
   /**
    * The action to emit when the scrim is clicked.
@@ -88,7 +88,7 @@ export function prompt({
   transition,
   scrimClickAction = 'cancel',
   escapeKeyAction = 'cancel',
-  onDialogOpen,
+  onDialogReady,
 }: PromptOptions) {
   return new Promise(async (resolve, reject) => {
     const dialogref = createRef<AugmentedMdDialog>();
@@ -106,9 +106,6 @@ export function prompt({
           scrimClickAction="${scrimClickAction}"
           escapeKeyAction="${escapeKeyAction}"
           transition=${transition ?? 'grow-down'}
-          @opened=${() => {
-            onDialogOpen(dialogref.value);
-          }}
           @closed=${async (e) => {
             switch (e.detail.action) {
               case 'cancel':
@@ -182,12 +179,13 @@ export function prompt({
     );
 
     const dialog = dialogref.value;
-    await dialog.updateComplete;
-    await dialog.updateComplete;
+    //  await dialog.updateComplete;
+    //  await dialog.updateComplete;
     dialog.$ = {};
     dialog.querySelectorAll('[id]').forEach((el) => {
       dialog.$[el.getAttribute('id')] = el;
     });
+    onDialogReady?.(dialogref.value);
     dialog.show();
   });
 }
