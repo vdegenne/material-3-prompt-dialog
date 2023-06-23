@@ -94,7 +94,7 @@ export function dialog({
   scrimClickAction = 'cancel',
   escapeKeyAction = 'cancel',
   onDialogReady,
-}: PromptOptions) {
+}: PromptOptions): Promise<any> {
   return new Promise(async (resolve, reject) => {
     const dialogref = createRef<AugmentedMdDialog>();
     const container = document.createElement('div');

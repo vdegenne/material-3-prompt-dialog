@@ -29,7 +29,7 @@ export async function prompt({
   promptText: headline = 'Enter a name',
   confirmButton = {},
 }: // confirmButtonType = 'md-filled-button',
-PromptOptions) {
+PromptOptions): Promise<string> {
   confirmButton.buttonType = confirmButton.buttonType ?? 'md-filled-button';
   confirmButton.label = confirmButton.label ?? 'Confirm';
 
