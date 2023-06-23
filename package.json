@@ -16,7 +16,7 @@
     "prepare": "husky install"
   },
   "devDependencies": {
-    "@material/web": "^1.0.0-pre.9",
+    "@material/web": "^1.0.0-pre.11",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.2",
     "lit-html": "^2.7.4",

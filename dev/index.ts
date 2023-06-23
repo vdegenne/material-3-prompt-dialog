@@ -1,12 +1,18 @@
+import {html} from 'lit-html';
 import {prompt} from '../src/index.js';
 
 let i = 0;
 
 try {
   const returnedValue = await prompt({
-    transition: 'shrink',
+    // transition: '',
     headline: 'Are you sure?',
-    content: 'are you sure you want to delete this item?',
+    content: html`are you sure you want to delete this item?
+      <b id="bold">test</b>`,
+    escapeKeyAction: '',
+    onDialogOpen(dialog) {
+      dialog.$.bold.setAttribute('style', 'background-color:green');
+    },
     confirmButton: {
       dialogAction: '',
       async callback(dialog) {

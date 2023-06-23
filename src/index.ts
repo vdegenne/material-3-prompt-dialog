@@ -5,6 +5,8 @@ import {MdDialog} from '@material/web/dialog/dialog.js';
 import '@material/web/dialog/dialog.js';
 import '@material/web/button/text-button.js';
 
+type AugmentedMdDialog = MdDialog & {$: {[elementId: string]: Element}};
+
 export interface PromptOptions {
   /**
    * Headline of the dialog.
@@ -24,10 +26,32 @@ export interface PromptOptions {
   cancelButton?: PromptButton;
   /**
    * Transition of the dialog.
+   *
    * @type {import('@material/web/dialog/dialog.js').MdDialog['transition']}
    * @default 'grow-down'
    */
   transition?: MdDialog['transition'];
+
+  /**
+   * Callback when the dialog first renders
+   *
+   * @param dialog the prompt dialog
+   */
+  onDialogOpen?: (dialog: AugmentedMdDialog) => void;
+
+  /**
+   * The action to emit when the scrim is clicked.
+   *
+   * @default "cancel"
+   */
+  scrimClickAction?: string;
+
+  /**
+   * The action to emit when escape key is pressed.
+   *
+   * @default "cancel"
+   */
+  escapeKeyAction?: string;
 }
 
 export interface PromptButton {
@@ -45,10 +69,10 @@ export interface PromptButton {
   dialogAction?: string;
   /**
    * Option callback to execute when the button is clicked.
-   * @param {MdDialog} dialog dialog host
+   * @param {AugmentedMdDialog} dialog dialog host
    * @returns void
    */
-  callback?: (dialog?: MdDialog) => void | Promise<any>;
+  callback?: (dialog: AugmentedMdDialog) => void | Promise<any>;
   /**
    * The default tagname to be used for the button.
    * @default 'md-text-button'
@@ -56,17 +80,18 @@ export interface PromptButton {
   buttonType?: string;
 }
 
-export function prompt(
-  {
-    headline,
-    content = '',
-    cancelButton,
-    confirmButton,
-    transition,
-  }: PromptOptions = {content: ''}
-) {
+export function prompt({
+  headline,
+  content,
+  cancelButton,
+  confirmButton,
+  transition,
+  scrimClickAction = 'cancel',
+  escapeKeyAction = 'cancel',
+  onDialogOpen,
+}: PromptOptions) {
   return new Promise(async (resolve, reject) => {
-    const dialogref = createRef<MdDialog>();
+    const dialogref = createRef<AugmentedMdDialog>();
     const container = document.createElement('div');
 
     document.body.appendChild(container);
@@ -78,10 +103,12 @@ export function prompt(
       html`
         <md-dialog
           ${ref(dialogref)}
-          escapeKeyAction="cancel"
-          scrimClickAction="cancel"
+          scrimClickAction="${scrimClickAction}"
+          escapeKeyAction="${escapeKeyAction}"
           transition=${transition ?? 'grow-down'}
-          open
+          @opened=${() => {
+            onDialogOpen(dialogref.value);
+          }}
           @closed=${async (e) => {
             switch (e.detail.action) {
               case 'cancel':
@@ -153,5 +180,14 @@ export function prompt(
       `,
       container
     );
+
+    const dialog = dialogref.value;
+    await dialog.updateComplete;
+    await dialog.updateComplete;
+    dialog.$ = {};
+    dialog.querySelectorAll('[id]').forEach((el) => {
+      dialog.$[el.getAttribute('id')] = el;
+    });
+    dialog.show();
   });
 }
