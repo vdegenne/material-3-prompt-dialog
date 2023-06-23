@@ -189,6 +189,8 @@ export function prompt({
       dialog.$[el.getAttribute('id')] = el;
     });
 
+    onDialogReady?.(dialog);
+
     dialog.show();
   });
 }

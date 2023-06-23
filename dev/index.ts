@@ -18,9 +18,9 @@ try {
         >`;
     },
     escapeKeyAction: '',
-    //  onDialogReady(dialog) {
-    //    dialog.$.bold.setAttribute('style', 'background-color:green');
-    //  },
+    onDialogReady(dialog) {
+      dialog.$.bold.setAttribute('style', 'background-color:green');
+    },
     confirmButton: {
       dialogAction: '',
       async callback(dialog) {
