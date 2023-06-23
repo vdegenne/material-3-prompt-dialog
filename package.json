@@ -5,6 +5,18 @@
   "main": "lib/index.js",
   "module": "lib/index.js",
   "license": "MIT",
+  "exports": {
+    "dialog": {
+      "import": "./lib/dialog.js",
+      "types": "./lib/dialog.d.ts",
+      "default": "./lib/dialog.js"
+    },
+    "prompt": {
+      "import": "./lib/prompt.js",
+      "types": "./lib/prompt.d.ts",
+      "default": "./lib/prompt.js"
+    }
+  },
   "author": {
     "name": "vdegenne",
     "url": "https://github.com/vdegenne"
