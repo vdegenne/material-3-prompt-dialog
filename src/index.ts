@@ -15,7 +15,7 @@ export interface PromptOptions {
   /**
    * Content of the dialog.
    */
-  content: string | TemplateResult;
+  content: (dialog: AugmentedMdDialog) => string | TemplateResult;
   /**
    * Confirm button options.
    */
@@ -123,17 +123,25 @@ export function prompt({
             container.remove();
           }}
         >
-          <div slot="header">${headline}</div>
-          ${content}
-          ${cancelButton
-            ? (() => {
-                cancelButton.buttonType =
-                  cancelButton.buttonType ?? 'md-text-button';
-                const button = literal`${unsafeStatic(
-                  cancelButton.buttonType
-                )}`;
-                return staticHtml`
+        </md-dialog>
+      `,
+      container
+    );
+
+    const dialog = dialogref.value;
+
+    render(
+      html`
+        <div slot="header">${headline}</div>
+        ${content(dialog)}
+        ${cancelButton
+          ? (() => {
+              cancelButton.buttonType =
+                cancelButton.buttonType ?? 'md-text-button';
+              const button = literal`${unsafeStatic(cancelButton.buttonType)}`;
+              return staticHtml`
 									<${button}
+										id="cancelButton"
 										slot="footer"
 										@click=${() => {
                       if (cancelButton.callback == undefined) {
@@ -147,17 +155,16 @@ export function prompt({
 										>${cancelButton.label ?? 'Cancel'}</${button}
 									>
 								`;
-              })()
-            : nothing}
-          ${confirmButton
-            ? (() => {
-                confirmButton.buttonType =
-                  confirmButton.buttonType ?? 'md-text-button';
-                const button = literal`${unsafeStatic(
-                  confirmButton.buttonType
-                )}`;
-                return staticHtml`
+            })()
+          : nothing}
+        ${confirmButton
+          ? (() => {
+              confirmButton.buttonType =
+                confirmButton.buttonType ?? 'md-text-button';
+              const button = literal`${unsafeStatic(confirmButton.buttonType)}`;
+              return staticHtml`
 									<${button}
+										id="confirmButton"
 										slot="footer"
 										@click=${() => {
                       if (confirmButton.callback == undefined) {
@@ -171,21 +178,17 @@ export function prompt({
 										>${confirmButton.label ?? 'Confirm'}</${button}
 									>
 								`;
-              })()
-            : nothing}
-        </md-dialog>
+            })()
+          : nothing}
       `,
-      container
+      dialog
     );
 
-    const dialog = dialogref.value;
-    //  await dialog.updateComplete;
-    //  await dialog.updateComplete;
     dialog.$ = {};
     dialog.querySelectorAll('[id]').forEach((el) => {
       dialog.$[el.getAttribute('id')] = el;
     });
-    onDialogReady?.(dialogref.value);
+
     dialog.show();
   });
 }

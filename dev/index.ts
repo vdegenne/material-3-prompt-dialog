@@ -5,14 +5,22 @@ let i = 0;
 
 try {
   const returnedValue = await prompt({
-    // transition: '',
+    //  transition: '',
     headline: 'Are you sure?',
-    content: html`are you sure you want to delete this item?
-      <b id="bold">test</b>`,
-    escapeKeyAction: '',
-    onDialogReady(dialog) {
-      dialog.$.bold.setAttribute('style', 'background-color:green');
+    content(dialog) {
+      return html`are you sure you want to delete this item?
+        <b
+          id="bold"
+          @click=${() => {
+            console.log(dialog.$.confirmButton);
+          }}
+          >test</b
+        >`;
     },
+    escapeKeyAction: '',
+    //  onDialogReady(dialog) {
+    //    dialog.$.bold.setAttribute('style', 'background-color:green');
+    //  },
     confirmButton: {
       dialogAction: '',
       async callback(dialog) {
