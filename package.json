@@ -28,9 +28,8 @@
   },
   "type": "module",
   "scripts": {
-    "dev": "vite dev/ --host",
-    "build": "tsc --pretty",
-    "prepare": "husky install"
+    "dev": "rm -rf node_modules/.vite && vite dev/ --host",
+    "build": "tsc --pretty"
   },
   "devDependencies": {
     "@material/web": "^1.0.0-pre.11",
@@ -45,8 +44,5 @@
     "/lib",
     "!/lib/dev",
     "screenshot.png"
-  ],
-  "lint-staged": {
-    "**/*.{cjs,html,js,json,md,ts}": "prettier --single-quote --no-bracket-spacing --write"
-  }
+  ]
 }

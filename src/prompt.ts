@@ -5,7 +5,7 @@
  */
 import {html} from 'lit-html';
 import type {PromptButton} from './dialog.js';
-import {dialog} from './dialog.js';
+import {materialDialog} from './dialog.js';
 import type {MdFilledTextField} from '@material/web/textfield/filled-text-field.js';
 
 interface PromptOptions {
@@ -25,7 +25,7 @@ interface PromptOptions {
  *
  * @returns {string} the content of the input or throw an error if it was canceled.
  */
-export async function prompt({
+export async function materialPrompt({
   promptText: headline = 'Enter a name',
   confirmButton = {},
 }: // confirmButtonType = 'md-filled-button',
@@ -33,7 +33,7 @@ PromptOptions): Promise<string> {
   confirmButton.buttonType = confirmButton.buttonType ?? 'md-filled-button';
   confirmButton.label = confirmButton.label ?? 'Confirm';
 
-  return await dialog({
+  return await materialDialog({
     headline,
 
     content(dialog) {
