@@ -15,9 +15,9 @@ type AugmentedMdDialog = MdDialog & {$: {[elementId: string]: Element}};
 
 export interface PromptOptions {
 	/**
-	 * Headline of the dialog.
+	 * Header of the dialog.
 	 */
-	headline?: string | TemplateResult;
+	header?: string | TemplateResult;
 	/**
 	 * Content of the dialog.
 	 */
@@ -92,7 +92,7 @@ export interface PromptButton {
 }
 
 export function materialDialog({
-	headline,
+	header,
 	content,
 	cancelButton,
 	confirmButton,
@@ -114,8 +114,8 @@ export function materialDialog({
 			html`
 				<md-dialog
 					${ref(dialogref)}
-					scrimClickAction="${scrimClickAction}"
-					escapeKeyAction="${escapeKeyAction}"
+					scrim-click-action="${scrimClickAction}"
+					escape-key-action="${escapeKeyAction}"
 					transition=${transition ?? 'grow-down'}
 					@closed=${async (e) => {
 						switch (e.detail.action) {
@@ -143,7 +143,7 @@ export function materialDialog({
 
 		render(
 			html`
-				<div slot="header">${headline}</div>
+				<div slot="header">${header}</div>
 				${content(dialog)}
 				${cancelButton
 					? (() => {
@@ -163,7 +163,7 @@ export function materialDialog({
 												resolve(await cancelButton.callback(dialogref.value));
 											});
 										}}
-										dialogAction="${cancelButton.dialogAction ?? 'cancel'}"
+										dialog-action="${cancelButton.dialogAction ?? 'cancel'}"
 										>${cancelButton.label ?? 'Cancel'}</${button}
 									>
 								`;
@@ -187,7 +187,7 @@ export function materialDialog({
 												resolve(await confirmButton.callback(dialogref.value));
 											});
 										}}
-										dialogAction="${confirmButton.dialogAction ?? 'confirm'}"
+										dialog-action="${confirmButton.dialogAction ?? 'confirm'}"
 										>${confirmButton.label ?? 'Confirm'}</${button}
 									>
 								`;

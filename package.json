@@ -20,6 +20,11 @@
       "import": "./lib/prompt.js",
       "types": "./lib/prompt.d.ts",
       "default": "./lib/prompt.js"
+    },
+    "./confirm": {
+      "import": "./lib/confirm.js",
+      "types": "./lib/confirm.d.ts",
+      "default": "./lib/confirm.js"
     }
   },
   "author": {
@@ -32,7 +37,7 @@
     "build": "tsc --pretty"
   },
   "devDependencies": {
-    "@material/web": "^1.0.0-pre.11",
+    "@material/web": "^1.0.0-pre.12",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.2",
     "lit-html": "^2.7.4",

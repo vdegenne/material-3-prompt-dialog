@@ -15,7 +15,7 @@ export async function materialConfirm({
 	confirmButton = {},
 }: MaterialConfirmOptions = {}) {
 	return await materialDialog({
-		headline: header,
+		header,
 
 		content() {
 			return content;
