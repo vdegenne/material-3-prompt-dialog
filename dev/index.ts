@@ -1,4 +1,4 @@
-import {materialConfirm} from '../src/index.js';
+import {materialConfirm, materialPrompt} from '../src/index.js';
 import '@material/web/button/filled-button.js';
 import '@material/web/textfield/filled-text-field.js';
 
@@ -42,38 +42,36 @@ import '@material/web/textfield/filled-text-field.js';
 // 	console.log('was canceled');
 // }
 
-// try {
-// 	alert(
-// 		// await prompt({
-// 		// 	p
-// 		// 	confirmButtonType: 'md-text-button',
-// 		// })
-// 		await prompt({
-// 			promptText: 'Enter something',
-// 			confirmButton: {
-// 				label: 'test',
-// 				callback(dialog) {
-// 					console.log('click click');
-// 				},
-// 				styles: {
-
-// 				},
-// 			},
-// 		})
-// 	);
-// } catch (e) {
-// 	console.log('canceled');
-// }
-
 try {
-	await materialConfirm({
-		confirmButton: {
-			buttonType: 'md-filled-button',
-			styles: {
-				'--md-filled-button-container-color': 'red',
+	alert(
+		// await prompt({
+		// 	p
+		// 	confirmButtonType: 'md-text-button',
+		// })
+		await materialPrompt({
+			promptText: 'Enter something',
+			confirmButton: {
+				label: 'test',
+				callback(dialog) {
+					console.log('click click');
+				},
+				styles: {},
 			},
-		},
-	});
+		})
+	);
 } catch (e) {
 	console.log('canceled');
 }
+
+// try {
+// 	await materialConfirm({
+// 		confirmButton: {
+// 			buttonType: 'md-filled-button',
+// 			styles: {
+// 				'--md-filled-button-container-color': 'red',
+// 			},
+// 		},
+// 	});
+// } catch (e) {
+// 	console.log('canceled');
+// }

@@ -40,6 +40,7 @@ PromptOptions): Promise<string> {
 			return html`<md-filled-text-field
 				id="inputButton"
 				dialog-focus
+				style="width:100%"
 				@keydown=${() => {
 					setTimeout(() => {
 						(dialog.$.confirmButton as MdFilledTextField).disabled =
