@@ -1,6 +1,7 @@
 import {materialConfirm, materialPrompt} from '../src/index.js';
 import '@material/web/button/filled-button.js';
 import '@material/web/textfield/filled-text-field.js';
+import '@material/web/textfield/outlined-text-field.js';
 
 // let i = 0;
 // try {
@@ -49,11 +50,13 @@ try {
 		// 	confirmButtonType: 'md-text-button',
 		// })
 		await materialPrompt({
-			promptText: 'Enter something',
-			confirmButton: {
-				label: 'test',
-				styles: {},
-			},
+			// promptText: 'Enter something',
+			// confirmButton: {
+			// 	label: 'test',
+			// 	styles: {},
+			// },
+			initialValue: '',
+			// textfieldType: 'md-outlined-text-field'
 		})
 	);
 } catch (e) {
