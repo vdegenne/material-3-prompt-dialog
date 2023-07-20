@@ -1,7 +1,7 @@
 {
   "name": "material-3-prompt-dialog",
   "description": "MWC 3 prompt dialog utility function",
-  "version": "0.6.1",
+  "version": "0.7.2",
   "main": "lib/index.js",
   "module": "lib/index.js",
   "license": "MIT",
@@ -18,7 +18,7 @@
     },
     "./prompt": {
       "import": "./lib/prompt.js",
-      "types": "./lib/prompt.d.ts",
+      "types": "./lib/prompt.d.ts"	,
       "default": "./lib/prompt.js"
     },
     "./confirm": {

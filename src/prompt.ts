@@ -26,15 +26,11 @@ interface PromptOptions {
  * @returns {string} the content of the input or throw an error if it was canceled.
  */
 export async function materialPrompt({
-	promptText: header = 'Enter a name',
+	promptText = 'Enter a name',
 	confirmButton = {},
-}: // confirmButtonType = 'md-filled-button',
-PromptOptions): Promise<string> {
-	confirmButton.buttonType = confirmButton.buttonType ?? 'md-filled-button';
-	confirmButton.label = confirmButton.label ?? 'Confirm';
-
+}: PromptOptions): Promise<string> {
 	return await materialDialog({
-		header,
+		header: promptText,
 
 		content(dialog) {
 			return html`<md-filled-text-field
@@ -43,9 +39,14 @@ PromptOptions): Promise<string> {
 				style="width:100%"
 				@keydown=${() => {
 					setTimeout(() => {
-						(dialog.$.confirmButton as MdFilledTextField).disabled =
+						dialog.$.confirmButton.disabled =
 							(dialog.$.inputButton as HTMLInputElement).value === '';
 					});
+				}}
+				@keypress=${(e: KeyboardEvent) => {
+					if (e.key === 'Enter') {
+						dialog.$.confirmButton.click();
+					}
 				}}
 			></md-filled-text-field>`;
 		},
@@ -53,11 +54,14 @@ PromptOptions): Promise<string> {
 		cancelButton: {},
 
 		confirmButton: {
-			buttonType: confirmButton.buttonType,
-			label: confirmButton.label,
+			buttonType: confirmButton.buttonType ?? 'md-filled-button',
+			label: confirmButton.label ?? 'Confirm',
 			async callback(dialog) {
 				if (confirmButton.callback) {
-					await confirmButton.callback(dialog);
+					const result = await confirmButton.callback(dialog);
+					if (result) {
+						return result;
+					}
 				}
 				return dialog!.querySelector('md-filled-text-field')!.value;
 			},

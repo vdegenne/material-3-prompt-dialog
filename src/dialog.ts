@@ -11,7 +11,13 @@ import '@material/web/dialog/dialog.js';
 import '@material/web/button/text-button.js';
 import {StyleInfo, styleMap} from 'lit-html/directives/style-map.js';
 
-type AugmentedMdDialog = MdDialog & {$: {[elementId: string]: Element}};
+type AugmentedMdDialog = MdDialog & {
+	$: {
+		[elementId: string]: Element;
+		confirmButton: HTMLButtonElement;
+		cancelButton: HTMLButtonElement;
+	};
+};
 
 export interface PromptOptions {
 	/**
@@ -78,7 +84,7 @@ export interface PromptButton {
 	 * @param {AugmentedMdDialog} dialog dialog host
 	 * @returns void
 	 */
-	callback?: (dialog: AugmentedMdDialog) => void | Promise<any>;
+	callback?: (dialog: AugmentedMdDialog) => any | Promise<any>;
 	/**
 	 * The default tagname to be used for the button.
 	 * @default 'md-text-button'
@@ -102,10 +108,8 @@ export function materialDialog({
 	onDialogReady,
 }: PromptOptions): Promise<any> {
 	return new Promise(async (resolve, reject) => {
-		const dialogref = createRef<AugmentedMdDialog>();
+		// const dialogref = createRef<AugmentedMdDialog>();
 		const container = document.createElement('div');
-
-		document.body.appendChild(container);
 
 		let cancelCallbackPromise: Promise<any> = Promise.resolve();
 		let confirmCallbackPromise: Promise<any> = Promise.resolve();
@@ -113,7 +117,6 @@ export function materialDialog({
 		render(
 			html`
 				<md-dialog
-					${ref(dialogref)}
 					scrim-click-action="${scrimClickAction}"
 					escape-key-action="${escapeKeyAction}"
 					transition=${transition ?? 'grow-down'}
@@ -130,7 +133,7 @@ export function materialDialog({
 								// resolve(callbackResult ?? e.detail.action);
 								resolve(await confirmCallbackPromise);
 						}
-						dialogref.value.remove();
+						(e.target as Element).remove();
 						container.remove();
 					}}
 				>
@@ -139,7 +142,13 @@ export function materialDialog({
 			container
 		);
 
-		const dialog = dialogref.value;
+		document.body.prepend(container);
+
+		// const dialog = dialogref.value;
+		const dialog = container.querySelector(
+			':scope > md-dialog'
+		) as AugmentedMdDialog;
+		await dialog.updateComplete;
 
 		render(
 			html`
@@ -156,12 +165,11 @@ export function materialDialog({
 										slot="footer"
 										style=${styleMap(cancelButton.styles ?? {})}
 										@click=${() => {
-											if (cancelButton.callback == undefined) {
-												return;
+											if (cancelButton.callback) {
+												cancelCallbackPromise = new Promise(async (resolve) => {
+													resolve(await cancelButton.callback(dialog));
+												});
 											}
-											cancelCallbackPromise = new Promise(async (resolve) => {
-												resolve(await cancelButton.callback(dialogref.value));
-											});
 										}}
 										dialog-action="${cancelButton.dialogAction ?? 'cancel'}"
 										>${cancelButton.label ?? 'Cancel'}</${button}
@@ -180,12 +188,13 @@ export function materialDialog({
 										slot="footer"
 										style=${styleMap(confirmButton.styles ?? {})}
 										@click=${() => {
-											if (confirmButton.callback == undefined) {
-												return;
+											if (confirmButton.callback) {
+												confirmCallbackPromise = new Promise(
+													async (resolve) => {
+														resolve(await confirmButton.callback(dialog));
+													}
+												);
 											}
-											confirmCallbackPromise = new Promise(async (resolve) => {
-												resolve(await confirmButton.callback(dialogref.value));
-											});
 										}}
 										dialog-action="${confirmButton.dialogAction ?? 'confirm'}"
 										>${confirmButton.label ?? 'Confirm'}</${button}
@@ -197,13 +206,17 @@ export function materialDialog({
 			dialog
 		);
 
-		dialog.$ = {};
+		dialog.$ = {
+			confirmButton: null,
+			cancelButton: null,
+		};
 		dialog.querySelectorAll('[id]').forEach((el) => {
 			dialog.$[el.getAttribute('id')] = el;
 		});
 
-		onDialogReady?.(dialog);
+		await dialog.updateComplete;
 
+		onDialogReady?.(dialog);
 		dialog.show();
 	});
 }

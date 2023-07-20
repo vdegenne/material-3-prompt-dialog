@@ -52,9 +52,6 @@ try {
 			promptText: 'Enter something',
 			confirmButton: {
 				label: 'test',
-				callback(dialog) {
-					console.log('click click');
-				},
 				styles: {},
 			},
 		})
