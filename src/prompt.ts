@@ -43,7 +43,7 @@ export async function materialPrompt({
 	confirmButton,
 }: PromptOptions = {}): Promise<string> {
 	return await materialDialog({
-		header: promptText ?? 'Enter a value',
+		headline: promptText ?? 'Enter a value',
 
 		content(dialog) {
 			const textfieldTag = literal`${unsafeStatic(
@@ -81,7 +81,6 @@ export async function materialPrompt({
 					}
 				}
 				return (dialog.$.textfield as HTMLInputElement).value;
-				// return dialog!.querySelector('md-filled-text-field')!.value;
 			},
 		},
 

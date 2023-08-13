@@ -55,7 +55,7 @@ try {
 			// 	label: 'test',
 			// 	styles: {},
 			// },
-			initialValue: '',
+			initialValue: 'test',
 			// textfieldType: 'md-outlined-text-field'
 		})
 	);

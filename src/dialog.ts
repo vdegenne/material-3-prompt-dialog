@@ -5,7 +5,6 @@
  */
 import {render, TemplateResult, html, nothing} from 'lit-html';
 import {html as staticHtml, literal, unsafeStatic} from 'lit-html/static.js';
-import {createRef, ref} from 'lit-html/directives/ref.js';
 import {MdDialog} from '@material/web/dialog/dialog.js';
 import '@material/web/dialog/dialog.js';
 import '@material/web/button/text-button.js';
@@ -21,9 +20,9 @@ type AugmentedMdDialog = MdDialog & {
 
 export interface PromptOptions {
 	/**
-	 * Header of the dialog.
+	 * Headline of the header of the dialog.
 	 */
-	header?: string | TemplateResult;
+	headline?: string | TemplateResult;
 	/**
 	 * Content of the dialog.
 	 */
@@ -36,13 +35,6 @@ export interface PromptOptions {
 	 * Cancel button options.
 	 */
 	cancelButton?: PromptButton;
-	/**
-	 * Transition of the dialog.
-	 *
-	 * @type {import('@material/web/dialog/dialog.js').MdDialog['transition']}
-	 * @default 'grow-down'
-	 */
-	transition?: MdDialog['transition'];
 
 	/**
 	 * Callback when the dialog content is ready (before it opens).
@@ -52,18 +44,18 @@ export interface PromptOptions {
 	onDialogReady?: (dialog: AugmentedMdDialog) => void;
 
 	/**
-	 * The action to emit when the scrim is clicked.
+	 * Whether or not to close the dialog on scrim click.
 	 *
-	 * @default "cancel"
+	 * @default false
 	 */
-	scrimClickAction?: string;
+	blockScrimClick?: boolean;
 
 	/**
-	 * The action to emit when escape key is pressed.
+	 * Whether or not to close the dialog on escape key.
 	 *
-	 * @default "cancel"
+	 * @default false
 	 */
-	escapeKeyAction?: string;
+	blockEscapeKey?: boolean;
 }
 
 export interface PromptButton {
@@ -98,13 +90,12 @@ export interface PromptButton {
 }
 
 export function materialDialog({
-	header,
+	headline,
 	content,
 	cancelButton,
 	confirmButton,
-	transition,
-	scrimClickAction = 'cancel',
-	escapeKeyAction = 'cancel',
+	blockScrimClick = false,
+	blockEscapeKey = false,
 	onDialogReady,
 }: PromptOptions): Promise<any> {
 	return new Promise(async (resolve, reject) => {
@@ -114,14 +105,39 @@ export function materialDialog({
 		let cancelCallbackPromise: Promise<any> = Promise.resolve();
 		let confirmCallbackPromise: Promise<any> = Promise.resolve();
 
+		let escapePressed = false;
+
 		render(
 			html`
 				<md-dialog
-					scrim-click-action="${scrimClickAction}"
-					escape-key-action="${escapeKeyAction}"
-					transition=${transition ?? 'grow-down'}
-					@closed=${async (e) => {
-						switch (e.detail.action) {
+					?block-scrim-click="${blockScrimClick}"
+					?block-escape-key="${blockEscapeKey}"
+					@keydown=${(evt) => {
+						if (evt.code === 'Escape') {
+							escapePressed = true;
+						}
+					}}
+					@close=${(evt) => {
+						const dialog = evt.target as HTMLDialogElement;
+						if (dialog.returnValue === '') {
+							if (escapePressed) {
+								if (dialog.hasAttribute('block-escape-key')) {
+									evt.preventDefault();
+								}
+							} else {
+								if (dialog.hasAttribute('block-scrim-click')) {
+									evt.preventDefault();
+								}
+							}
+							escapePressed = false;
+						}
+					}}
+					@closed=${async (evt: Event) => {
+						const target = evt.target as HTMLDialogElement;
+						// const form = target.querySelector('form');
+						console.log(target.returnValue);
+						switch (target.returnValue) {
+							case '':
 							case 'cancel':
 								// TODO: reactivate following if need the action somehow
 								// reject(callbackResult ?? e.detail.action);
@@ -133,7 +149,7 @@ export function materialDialog({
 								// resolve(callbackResult ?? e.detail.action);
 								resolve(await confirmCallbackPromise);
 						}
-						(e.target as Element).remove();
+						(evt.target as Element).remove();
 						container.remove();
 					}}
 				>
@@ -152,17 +168,21 @@ export function materialDialog({
 
 		render(
 			html`
-				<div slot="header">${header}</div>
-				${content(dialog)}
-				${cancelButton
-					? (() => {
-							cancelButton.buttonType =
-								cancelButton.buttonType ?? 'md-text-button';
-							const button = literal`${unsafeStatic(cancelButton.buttonType)}`;
-							return staticHtml`
+				<div slot="headline">${headline}</div>
+				<form method="dialog" id="inner-form" slot="content">
+					${content(dialog)}
+				</form>
+				<div slot="actions">
+					${cancelButton
+						? (() => {
+								cancelButton.buttonType =
+									cancelButton.buttonType ?? 'md-text-button';
+								const button = literal`${unsafeStatic(
+									cancelButton.buttonType
+								)}`;
+								return staticHtml`
 									<${button}
 										id="cancelButton"
-										slot="footer"
 										style=${styleMap(cancelButton.styles ?? {})}
 										@click=${() => {
 											if (cancelButton.callback) {
@@ -171,21 +191,23 @@ export function materialDialog({
 												});
 											}
 										}}
-										dialog-action="${cancelButton.dialogAction ?? 'cancel'}"
+										form="inner-form"
+										value="${cancelButton.dialogAction ?? 'cancel'}"
 										>${cancelButton.label ?? 'Cancel'}</${button}
 									>
 								`;
-					  })()
-					: nothing}
-				${confirmButton
-					? (() => {
-							confirmButton.buttonType =
-								confirmButton.buttonType ?? 'md-text-button';
-							const button = literal`${unsafeStatic(confirmButton.buttonType)}`;
-							return staticHtml`
+						  })()
+						: nothing}
+					${confirmButton
+						? (() => {
+								confirmButton.buttonType =
+									confirmButton.buttonType ?? 'md-text-button';
+								const button = literal`${unsafeStatic(
+									confirmButton.buttonType
+								)}`;
+								return staticHtml`
 									<${button}
 										id="confirmButton"
-										slot="footer"
 										style=${styleMap(confirmButton.styles ?? {})}
 										@click=${() => {
 											if (confirmButton.callback) {
@@ -196,12 +218,14 @@ export function materialDialog({
 												);
 											}
 										}}
-										dialog-action="${confirmButton.dialogAction ?? 'confirm'}"
+										form="inner-form"
+										value="${confirmButton.dialogAction ?? 'confirm'}"
 										>${confirmButton.label ?? 'Confirm'}</${button}
 									>
 								`;
-					  })()
-					: nothing}
+						  })()
+						: nothing}
+				</div>
 			`,
 			dialog
 		);
