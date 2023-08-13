@@ -139,8 +139,6 @@ export function materialDialog({
 					}}
 					@closed=${async (evt: Event) => {
 						const target = evt.target as HTMLDialogElement;
-						// const form = target.querySelector('form');
-						console.log(target.returnValue);
 						switch (target.returnValue) {
 							case '':
 							case 'cancel':
@@ -176,7 +174,6 @@ export function materialDialog({
 				<div slot="headline">${headline}</div>
 				<form method="dialog" id="inner-form" slot="content">
 					${content(dialog)}
-					<button>test</button>
 				</form>
 				<div slot="actions">
 					${cancelButton
