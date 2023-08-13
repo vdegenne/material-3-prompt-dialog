@@ -117,6 +117,11 @@ export function materialDialog({
 							escapePressed = true;
 						}
 					}}
+					@click=${(evt) => {
+						if ((evt.target as HTMLElement).hasAttribute('value') === false) {
+							evt.preventDefault();
+						}
+					}}
 					@close=${(evt) => {
 						const dialog = evt.target as HTMLDialogElement;
 						if (dialog.returnValue === '') {
@@ -171,6 +176,7 @@ export function materialDialog({
 				<div slot="headline">${headline}</div>
 				<form method="dialog" id="inner-form" slot="content">
 					${content(dialog)}
+					<button>test</button>
 				</form>
 				<div slot="actions">
 					${cancelButton
