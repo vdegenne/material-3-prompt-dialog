@@ -112,17 +112,7 @@ export function materialDialog({
 				<md-dialog
 					?block-scrim-click="${blockScrimClick}"
 					?block-escape-key="${blockEscapeKey}"
-					@keydown=${(evt) => {
-						if (evt.code === 'Escape') {
-							escapePressed = true;
-						}
-					}}
-					@click=${(evt) => {
-						if ((evt.target as HTMLElement).hasAttribute('value') === false) {
-							evt.preventDefault();
-						}
-					}}
-					@close=${(evt) => {
+					@cancel=${(evt: Event) => {
 						const dialog = evt.target as HTMLDialogElement;
 						if (dialog.returnValue === '') {
 							if (escapePressed) {
@@ -135,6 +125,11 @@ export function materialDialog({
 								}
 							}
 							escapePressed = false;
+						}
+					}}
+					@keydown=${(evt) => {
+						if (evt.code === 'Escape') {
+							escapePressed = true;
 						}
 					}}
 					@closed=${async (evt: Event) => {

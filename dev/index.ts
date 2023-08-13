@@ -1,7 +1,9 @@
-import {materialConfirm, materialPrompt} from '../src/index.js';
+import {materialConfirm, materialDialog, materialPrompt} from '../src/index.js';
 import '@material/web/button/filled-button.js';
 import '@material/web/textfield/filled-text-field.js';
 import '@material/web/textfield/outlined-text-field.js';
+import '@material/web/iconbutton/icon-button.js';
+import {html} from 'lit-html';
 
 // let i = 0;
 // try {
@@ -49,13 +51,25 @@ try {
 		// 	p
 		// 	confirmButtonType: 'md-text-button',
 		// })
-		await materialPrompt({
+		await materialDialog({
+			content(dialog) {
+				return html`
+					<div
+						@click=${(e: Event) => {
+							e.stopPropagation();
+						}}
+					>
+						<md-icon-button href="https://www.google.fr" target="_blank" form="">
+							<md-icon>A</md-icon>
+						</md-icon-button>
+					</div>
+				`;
+			},
 			// promptText: 'Enter something',
 			// confirmButton: {
 			// 	label: 'test',
 			// 	styles: {},
 			// },
-			initialValue: 'test',
 			// textfieldType: 'md-outlined-text-field'
 		})
 	);
