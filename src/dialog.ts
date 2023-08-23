@@ -41,7 +41,7 @@ export interface PromptOptions {
 	 *
 	 * @param dialog the prompt dialog
 	 */
-	onDialogReady?: (dialog: AugmentedMdDialog) => void;
+	onDialogReady?: (dialog: AugmentedMdDialog) => void|Promise<void>;
 
 	/**
 	 * Whether or not to close the dialog on scrim click.
@@ -238,7 +238,7 @@ export function materialDialog({
 
 		await dialog.updateComplete;
 
-		onDialogReady?.(dialog);
+		await onDialogReady?.(dialog);
 		dialog.show();
 	});
 }

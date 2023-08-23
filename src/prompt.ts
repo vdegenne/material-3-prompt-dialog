@@ -51,7 +51,7 @@ export async function materialPrompt({
 			)}`;
 			return staticHtml`<${textfieldTag}
 				id="textfield"
-				dialog-focus
+				autofocus
 				style="width:100%"
 				@keydown=${() => {
 					setTimeout(() => {
