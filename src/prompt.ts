@@ -29,6 +29,20 @@ interface PromptOptions {
 	 * Options for the confirm button.
 	 */
 	confirmButton?: PromptButton;
+
+	/**
+	 * Whether or not to close the dialog on scrim click.
+	 *
+	 * @default false
+	 */
+	blockScrimClick?: boolean;
+
+	/**
+	 * Whether or not to close the dialog on escape key.
+	 *
+	 * @default false
+	 */
+	blockEscapeKey?: boolean;
 }
 
 /**
@@ -41,9 +55,14 @@ export async function materialPrompt({
 	initialValue,
 	textfieldType,
 	confirmButton,
+	blockEscapeKey,
+	blockScrimClick
 }: PromptOptions = {}): Promise<string> {
 	return await materialDialog({
 		headline: promptText ?? 'Enter a value',
+
+		blockEscapeKey,
+		blockScrimClick,
 
 		content(dialog) {
 			const textfieldTag = literal`${unsafeStatic(
