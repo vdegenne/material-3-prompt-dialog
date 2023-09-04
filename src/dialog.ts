@@ -9,6 +9,7 @@ import {MdDialog} from '@material/web/dialog/dialog.js';
 import '@material/web/dialog/dialog.js';
 import '@material/web/button/text-button.js';
 import {StyleInfo, styleMap} from 'lit-html/directives/style-map.js';
+import {ifDefined} from 'lit-html/directives/if-defined.js';
 
 type AugmentedMdDialog = MdDialog & {
 	$: {
@@ -41,7 +42,7 @@ export interface PromptOptions {
 	 *
 	 * @param dialog the prompt dialog
 	 */
-	onDialogReady?: (dialog: AugmentedMdDialog) => void|Promise<void>;
+	onDialogReady?: (dialog: AugmentedMdDialog) => void | Promise<void>;
 
 	/**
 	 * Whether or not to close the dialog on scrim click.
@@ -56,6 +57,8 @@ export interface PromptOptions {
 	 * @default false
 	 */
 	blockEscapeKey?: boolean;
+
+	autocomplete: boolean;
 }
 
 export interface PromptButton {
@@ -97,7 +100,8 @@ export function materialDialog({
 	blockScrimClick = false,
 	blockEscapeKey = false,
 	onDialogReady,
-}: PromptOptions): Promise<any> {
+	autocomplete,
+}: Partial<PromptOptions>): Promise<any> {
 	return new Promise(async (resolve, reject) => {
 		// const dialogref = createRef<AugmentedMdDialog>();
 		const container = document.createElement('div');
@@ -167,7 +171,12 @@ export function materialDialog({
 		render(
 			html`
 				<div slot="headline">${headline}</div>
-				<form method="dialog" id="inner-form" slot="content">
+				<form
+					method="dialog"
+					id="inner-form"
+					slot="content"
+					autocomplete=${ifDefined(autocomplete ?? true ? null : 'off')}
+				>
 					${content(dialog)}
 				</form>
 				<div slot="actions">

@@ -1,5 +1,11 @@
 # material-3-prompt-dialog
 
+## 0.8.6
+
+### Patch Changes
+
+- Add autocomplete to options
+
 ## 0.8.5
 
 ### Patch Changes

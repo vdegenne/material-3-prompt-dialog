@@ -3,7 +3,7 @@
  * Copyright (c) 2023 Valentin Degenne
  * SPDX-License-Identifier: MIT
  */
-import {html} from 'lit-html';
+import {ifDefined} from 'lit/directives/if-defined.js';
 import {html as staticHtml, literal, unsafeStatic} from 'lit-html/static.js';
 import type {PromptButton} from './dialog.js';
 import {materialDialog} from './dialog.js';
@@ -43,6 +43,8 @@ interface PromptOptions {
 	 * @default false
 	 */
 	blockEscapeKey?: boolean;
+
+	autocomplete: boolean;
 }
 
 /**
@@ -56,13 +58,16 @@ export async function materialPrompt({
 	textfieldType,
 	confirmButton,
 	blockEscapeKey,
-	blockScrimClick
-}: PromptOptions = {}): Promise<string> {
+	blockScrimClick,
+	autocomplete,
+}: Partial<PromptOptions> = {}): Promise<string> {
 	return await materialDialog({
 		headline: promptText ?? 'Enter a value',
 
 		blockEscapeKey,
 		blockScrimClick,
+
+		autocomplete: autocomplete,
 
 		content(dialog) {
 			const textfieldTag = literal`${unsafeStatic(
@@ -72,6 +77,7 @@ export async function materialPrompt({
 				id="textfield"
 				autofocus
 				style="width:100%"
+				autocomplete=${ifDefined(autocomplete ?? true ? undefined : 'off')}
 				@keydown=${() => {
 					setTimeout(() => {
 						dialog.$.confirmButton.disabled =
