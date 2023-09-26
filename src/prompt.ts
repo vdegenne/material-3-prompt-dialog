@@ -45,6 +45,21 @@ interface PromptOptions {
 	blockEscapeKey?: boolean;
 
 	autocomplete: boolean;
+
+	/**
+	 * Type of the input (e.g. "password", "textarea", "number", ...)
+	 * @default "input"
+	 */
+	type: string;
+
+	/**
+	 * Number of rows if input is of type "textarea"
+	 */
+	rows: number;
+	/**
+	 * Number of columns if input is of type "textarea"
+	 */
+	cols: number;
 }
 
 /**
@@ -60,6 +75,8 @@ export async function materialPrompt({
 	blockEscapeKey,
 	blockScrimClick,
 	autocomplete,
+	type,
+	rows, cols
 }: Partial<PromptOptions> = {}): Promise<string> {
 	return await materialDialog({
 		headline: promptText ?? 'Enter a value',
@@ -78,6 +95,9 @@ export async function materialPrompt({
 				autofocus
 				style="width:100%"
 				autocomplete=${ifDefined(autocomplete ?? true ? undefined : 'off')}
+				type=${type ?? 'input'}
+				rows=${rows ?? 3}
+				cols=${cols ?? 20}
 				@keydown=${() => {
 					setTimeout(() => {
 						dialog.$.confirmButton.disabled =

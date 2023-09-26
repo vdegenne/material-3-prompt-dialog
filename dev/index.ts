@@ -35,7 +35,8 @@ try {
 	alert(
 		await materialPrompt({
 			promptText: 'hello',
-			autocomplete: false
+			autocomplete: false,
+			type: 'textarea'
 		})
 	);
 } catch (e) {

@@ -1,5 +1,11 @@
 # material-3-prompt-dialog
 
+## 0.9.0
+
+### Minor Changes
+
+- Add textarea support for the prompt
+
 ## 0.8.6
 
 ### Patch Changes
