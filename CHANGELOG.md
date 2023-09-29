@@ -1,5 +1,12 @@
 # material-3-prompt-dialog
 
+## 0.10.0
+
+### Minor Changes
+
+- Add autocomplete property
+- Add property to style the dialog
+
 ## 0.9.0
 
 ### Minor Changes

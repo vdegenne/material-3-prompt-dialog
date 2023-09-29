@@ -35,8 +35,10 @@ try {
 	alert(
 		await materialPrompt({
 			promptText: 'hello',
-			autocomplete: false,
-			type: 'textarea'
+			dialogStyles: {
+				width: '100%',
+				maxWidth: '1000px'
+			}
 		})
 	);
 } catch (e) {

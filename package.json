@@ -1,7 +1,7 @@
 {
   "name": "material-3-prompt-dialog",
   "description": "MWC 3 prompt dialog utility function",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "main": "lib/index.js",
   "module": "lib/index.js",
   "license": "MIT",
@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "@changesets/cli": "^2.26.2",
-    "@material/web": "^1.0.0-pre.15",
+    "@material/web": "^1.0.0",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.2",
     "lit-html": "^2.7.4",

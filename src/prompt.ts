@@ -7,6 +7,7 @@ import {ifDefined} from 'lit/directives/if-defined.js';
 import {html as staticHtml, literal, unsafeStatic} from 'lit-html/static.js';
 import type {PromptButton} from './dialog.js';
 import {materialDialog} from './dialog.js';
+import { StyleInfo } from 'lit-html/directives/style-map.js';
 
 interface PromptOptions {
 	/**
@@ -44,7 +45,10 @@ interface PromptOptions {
 	 */
 	blockEscapeKey?: boolean;
 
-	autocomplete: boolean;
+	/**
+	 * @default 'off'
+	 */
+	autocomplete: boolean|string;
 
 	/**
 	 * Type of the input (e.g. "password", "textarea", "number", ...)
@@ -60,6 +64,12 @@ interface PromptOptions {
 	 * Number of columns if input is of type "textarea"
 	 */
 	cols: number;
+
+
+	/**
+	 * Additional styles for the dialog
+	 */
+	dialogStyles: Readonly<StyleInfo>;
 }
 
 /**
@@ -76,15 +86,22 @@ export async function materialPrompt({
 	blockScrimClick,
 	autocomplete,
 	type,
-	rows, cols
+	rows, cols,
+	dialogStyles
 }: Partial<PromptOptions> = {}): Promise<string> {
+	if (autocomplete !== '' && !autocomplete) {
+		autocomplete = 'off';
+	}
+	if (autocomplete === true) {
+		autocomplete = ''
+	}
 	return await materialDialog({
 		headline: promptText ?? 'Enter a value',
 
 		blockEscapeKey,
 		blockScrimClick,
 
-		autocomplete: autocomplete,
+		styles: dialogStyles,
 
 		content(dialog) {
 			const textfieldTag = literal`${unsafeStatic(
@@ -92,9 +109,9 @@ export async function materialPrompt({
 			)}`;
 			return staticHtml`<${textfieldTag}
 				id="textfield"
-				autofocus
 				style="width:100%"
-				autocomplete=${ifDefined(autocomplete ?? true ? undefined : 'off')}
+				autofocus
+				autocomplete=${autocomplete}
 				type=${type ?? 'input'}
 				rows=${rows ?? 3}
 				cols=${cols ?? 20}

@@ -58,7 +58,10 @@ export interface PromptOptions {
 	 */
 	blockEscapeKey?: boolean;
 
-	autocomplete: boolean;
+	/**
+	 * Additional styles for the dialog (e.g. width control)
+	 */
+	styles: Readonly<StyleInfo>;
 }
 
 export interface PromptButton {
@@ -100,7 +103,7 @@ export function materialDialog({
 	blockScrimClick = false,
 	blockEscapeKey = false,
 	onDialogReady,
-	autocomplete,
+	styles,
 }: Partial<PromptOptions>): Promise<any> {
 	return new Promise(async (resolve, reject) => {
 		// const dialogref = createRef<AugmentedMdDialog>();
@@ -116,6 +119,7 @@ export function materialDialog({
 				<md-dialog
 					?block-scrim-click="${blockScrimClick}"
 					?block-escape-key="${blockEscapeKey}"
+					style="${styleMap(styles ?? {})}"
 					@cancel=${(evt: Event) => {
 						const dialog = evt.target as HTMLDialogElement;
 						if (dialog.returnValue === '') {
@@ -171,12 +175,7 @@ export function materialDialog({
 		render(
 			html`
 				<div slot="headline">${headline}</div>
-				<form
-					method="dialog"
-					id="inner-form"
-					slot="content"
-					autocomplete=${ifDefined(autocomplete ?? true ? null : 'off')}
-				>
+				<form method="dialog" id="inner-form" slot="content">
 					${content(dialog)}
 				</form>
 				<div slot="actions">
