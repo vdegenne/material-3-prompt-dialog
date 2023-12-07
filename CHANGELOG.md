@@ -1,5 +1,11 @@
 # material-3-prompt-dialog
 
+## 0.11.0
+
+### Minor Changes
+
+- Remove all @material/web deps to avoid conflict with target projects.
+
 ## 0.10.0
 
 ### Minor Changes

@@ -5,11 +5,10 @@
  */
 import {render, TemplateResult, html, nothing} from 'lit-html';
 import {html as staticHtml, literal, unsafeStatic} from 'lit-html/static.js';
-import {MdDialog} from '@material/web/dialog/dialog.js';
-import '@material/web/dialog/dialog.js';
-import '@material/web/button/text-button.js';
+import {type MdDialog} from '@material/web/dialog/dialog.js';
+// import '@material/web/dialog/dialog.js';
+// import '@material/web/button/text-button.js';
 import {StyleInfo, styleMap} from 'lit-html/directives/style-map.js';
-import {ifDefined} from 'lit-html/directives/if-defined.js';
 
 type AugmentedMdDialog = MdDialog & {
 	$: {
