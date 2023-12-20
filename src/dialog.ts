@@ -177,15 +177,18 @@ export function materialDialog({
 				<form method="dialog" id="inner-form" slot="content">
 					${content(dialog)}
 				</form>
-				<div slot="actions">
-					${cancelButton
-						? (() => {
-								cancelButton.buttonType =
-									cancelButton.buttonType ?? 'md-text-button';
-								const button = literal`${unsafeStatic(
-									cancelButton.buttonType
-								)}`;
-								return staticHtml`
+
+				${cancelButton || confirmButton
+					? html`
+							<div slot="actions">
+								${cancelButton
+									? (() => {
+											cancelButton.buttonType =
+												cancelButton.buttonType ?? 'md-text-button';
+											const button = literal`${unsafeStatic(
+												cancelButton.buttonType
+											)}`;
+											return staticHtml`
 									<${button}
 										id="cancelButton"
 										style=${styleMap(cancelButton.styles ?? {})}
@@ -201,16 +204,16 @@ export function materialDialog({
 										>${cancelButton.label ?? 'Cancel'}</${button}
 									>
 								`;
-						  })()
-						: nothing}
-					${confirmButton
-						? (() => {
-								confirmButton.buttonType =
-									confirmButton.buttonType ?? 'md-text-button';
-								const button = literal`${unsafeStatic(
-									confirmButton.buttonType
-								)}`;
-								return staticHtml`
+									  })()
+									: nothing}
+								${confirmButton
+									? (() => {
+											confirmButton.buttonType =
+												confirmButton.buttonType ?? 'md-text-button';
+											const button = literal`${unsafeStatic(
+												confirmButton.buttonType
+											)}`;
+											return staticHtml`
 									<${button}
 										id="confirmButton"
 										style=${styleMap(confirmButton.styles ?? {})}
@@ -228,9 +231,11 @@ export function materialDialog({
 										>${confirmButton.label ?? 'Confirm'}</${button}
 									>
 								`;
-						  })()
-						: nothing}
-				</div>
+									  })()
+									: nothing}
+							</div>
+					  `
+					: null}
 			`,
 			dialog
 		);

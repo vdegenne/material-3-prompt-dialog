@@ -1,5 +1,11 @@
 # material-3-prompt-dialog
 
+## 0.11.1
+
+### Patch Changes
+
+- Do not show actions if no buttons are defined
+
 ## 0.11.0
 
 ### Minor Changes

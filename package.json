@@ -1,57 +1,57 @@
 {
-	"name": "material-3-prompt-dialog",
-	"type": "module",
-	"version": "0.11.0",
-	"description": "MWC 3 prompt dialog utility function",
-	"main": "lib/index.js",
-	"module": "lib/index.js",
-	"license": "MIT",
-	"exports": {
-		".": {
-			"import": "./lib/index.js",
-			"types": "./lib/index.d.ts",
-			"default": "./lib/index.js"
-		},
-		"./dialog": {
-			"import": "./lib/dialog.js",
-			"types": "./lib/dialog.d.ts",
-			"default": "./lib/dialog.js"
-		},
-		"./prompt": {
-			"import": "./lib/prompt.js",
-			"types": "./lib/prompt.d.ts",
-			"default": "./lib/prompt.js"
-		},
-		"./confirm": {
-			"import": "./lib/confirm.js",
-			"types": "./lib/confirm.d.ts",
-			"default": "./lib/confirm.js"
-		}
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/vdegenne/material-3-prompt-dialog.git"
-	},
-	"author": {
-		"name": "vdegenne",
-		"url": "https://github.com/vdegenne"
-	},
-	"scripts": {
-		"dev": "rm -rf node_modules/.vite && vite dev/ --host",
-		"build": "tsc --pretty"
-	},
-	"devDependencies": {
-		"@changesets/cli": "^2.27.1",
-		"@material/web": "^1.0.1",
-		"husky": "^8.0.3",
-		"lint-staged": "^15.2.0",
-		"lit-html": "^3.1.0",
-		"prettier": "^2.8.8",
-		"typescript": "^5.3.3",
-		"vite": "^5.0.6"
-	},
-	"files": [
-		"lib",
-		"screenshot.png"
-	]
+  "name": "material-3-prompt-dialog",
+  "type": "module",
+  "version": "0.11.1",
+  "description": "MWC 3 prompt dialog utility function",
+  "main": "lib/index.js",
+  "module": "lib/index.js",
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "import": "./lib/index.js",
+      "types": "./lib/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./dialog": {
+      "import": "./lib/dialog.js",
+      "types": "./lib/dialog.d.ts",
+      "default": "./lib/dialog.js"
+    },
+    "./prompt": {
+      "import": "./lib/prompt.js",
+      "types": "./lib/prompt.d.ts",
+      "default": "./lib/prompt.js"
+    },
+    "./confirm": {
+      "import": "./lib/confirm.js",
+      "types": "./lib/confirm.d.ts",
+      "default": "./lib/confirm.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vdegenne/material-3-prompt-dialog.git"
+  },
+  "author": {
+    "name": "vdegenne",
+    "url": "https://github.com/vdegenne"
+  },
+  "scripts": {
+    "dev": "rm -rf node_modules/.vite && vite dev/ --host",
+    "build": "tsc --pretty"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.27.1",
+    "@material/web": "^1.1.1",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0",
+    "lit-html": "^3.1.0",
+    "prettier": "^2.8.8",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.10"
+  },
+  "files": [
+    "lib",
+    "screenshot.png"
+  ]
 }
