@@ -1,6 +1,6 @@
-import {materialDialog, materialPrompt} from '../src/index.js';
-import '@material/web/all.js';
-import {html} from 'lit-html';
+import { materialDialog, materialPrompt } from "../src/index.js";
+import "@material/web/all.js";
+import { html } from "lit-html";
 
 // try {
 // 	alert(
@@ -32,15 +32,17 @@ import {html} from 'lit-html';
 // }
 
 try {
-	alert(
-		await materialPrompt({
-			promptText: 'hello',
-			dialogStyles: {
-				width: '100%',
-				maxWidth: '1000px'
-			}
-		})
-	);
+  alert(
+    await materialPrompt({
+      promptText: "hello",
+      dialogStyles: {
+        width: "100%",
+        maxWidth: "1000px",
+      },
+      forbiddenValues: ["hellwo", "haha"],
+      forbiddenText: "NO",
+    })
+  );
 } catch (e) {
-	alert('canceled');
+  alert("canceled");
 }

@@ -1,5 +1,11 @@
 # material-3-prompt-dialog
 
+## 0.12.0
+
+### Minor Changes
+
+- Add forbidden values options to prompt dialog
+
 ## 0.11.1
 
 ### Patch Changes
