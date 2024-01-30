@@ -3,12 +3,12 @@
  * Copyright (c) 2023 Valentin Degenne
  * SPDX-License-Identifier: MIT
  */
-import {render, TemplateResult, html, nothing} from 'lit-html';
-import {html as staticHtml, literal, unsafeStatic} from 'lit-html/static.js';
 import {type MdDialog} from '@material/web/dialog/dialog.js';
+import {html, nothing, render, type TemplateResult} from 'lit-html';
+import {literal, html as staticHtml, unsafeStatic} from 'lit-html/static.js';
 // import '@material/web/dialog/dialog.js';
 // import '@material/web/button/text-button.js';
-import {StyleInfo, styleMap} from 'lit-html/directives/style-map.js';
+import {styleMap, type StyleInfo} from 'lit-html/directives/style-map.js';
 
 type AugmentedMdDialog = MdDialog & {
 	$: {

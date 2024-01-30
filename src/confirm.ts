@@ -1,5 +1,5 @@
-import {TemplateResult} from 'lit-html';
-import {PromptButton, materialDialog} from './dialog.js';
+import {type TemplateResult} from 'lit-html';
+import {materialDialog, type PromptButton} from './dialog.js';
 
 interface MaterialConfirmOptions {
 	headline?: string;

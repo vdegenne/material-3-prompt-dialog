@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "module": "ES2022",
-    "moduleResolution": "node",
+    "module": "Node16",
+    "moduleResolution": "Node16",
     "outDir": "lib",
+    "useDefineForClassFields": false,
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true
