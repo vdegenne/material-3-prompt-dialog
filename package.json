@@ -1,7 +1,7 @@
 {
   "name": "material-3-prompt-dialog",
   "type": "module",
-  "version": "0.12.0",
+  "version": "0.12.1",
   "description": "MWC 3 prompt dialog utility function",
   "main": "lib/index.js",
   "module": "lib/index.js",
@@ -55,3 +55,4 @@
     "screenshot.png"
   ]
 }
+
