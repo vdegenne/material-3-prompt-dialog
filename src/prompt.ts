@@ -137,7 +137,6 @@ export async function materialPrompt({
 				rows=${rows ?? 3}
 				cols=${cols ?? 20}
 				@keyup=${() => {
-          // setTimeout(() => {
           const textfield = dialog.$.textfield as TextField;
           const value = textfield.value;
           const forbidden = forbiddenValues && forbiddenValues.includes(value);
@@ -146,7 +145,6 @@ export async function materialPrompt({
           textfield.errorText = forbidden
             ? forbiddenText ?? "The value already exists"
             : "";
-          // }, 10);
         }}
 				@keypress=${(e: KeyboardEvent) => {
           if (e.key === "Enter") {

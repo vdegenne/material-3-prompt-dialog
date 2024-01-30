@@ -1,7 +1,7 @@
 {
   "name": "material-3-prompt-dialog",
   "type": "module",
-  "version": "0.12.1",
+  "version": "0.12.2",
   "description": "MWC 3 prompt dialog utility function",
   "main": "lib/index.js",
   "module": "lib/index.js",
@@ -38,7 +38,20 @@
   },
   "scripts": {
     "dev": "rm -rf node_modules/.vite && vite dev/ --host",
-    "build": "tsc --pretty"
+    "build": "wireit"
+  },
+  "wireit": {
+    "build": {
+      "command": "tsc --pretty",
+      "clean": "if-file-deleted",
+      "files": [
+        "tsconfig.json",
+        "src"
+      ],
+      "output": [
+        "lib"
+      ]
+    }
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
@@ -48,11 +61,11 @@
     "lit-html": "^3.1.0",
     "prettier": "^2.8.8",
     "typescript": "^5.3.3",
-    "vite": "^5.0.10"
+    "vite": "^5.0.10",
+    "wireit": "^0.14.4"
   },
   "files": [
     "lib",
     "screenshot.png"
   ]
 }
-
