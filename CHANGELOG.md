@@ -1,5 +1,11 @@
 # material-3-prompt-dialog
 
+## 1.0.0
+
+### Major Changes
+
+- Migrate to @material/web@2.0.0
+
 ## 0.12.0
 
 ### Minor Changes
