@@ -1,25 +1,23 @@
 {
 	"name": "material-3-prompt-dialog",
 	"type": "module",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "MWC 3 prompt dialog utility helpers",
-	"main": "lib/index.js",
-	"module": "lib/index.js",
 	"license": "MIT",
 	"exports": {
 		".": {
 			"default": "./lib/index.js",
 			"types": "./lib/index.d.ts"
 		},
-		"./dialog": {
-			"default": "./lib/dialog.js",
-			"types": "./lib/dialog.d.ts"
+		"./dialog.js": {
+			"default": "./lib/dialog2.js",
+			"types": "./lib/dialog2.d.ts"
 		},
-		"./prompt": {
+		"./prompt.js": {
 			"default": "./lib/prompt.js",
 			"types": "./lib/prompt.d.ts"
 		},
-		"./confirm": {
+		"./confirm.js": {
 			"default": "./lib/confirm.js",
 			"types": "./lib/confirm.d.ts"
 		}
@@ -29,7 +27,7 @@
 		"url": "https://github.com/vdegenne/material-3-prompt-dialog.git"
 	},
 	"author": {
-		"name": "vdegenne",
+		"name": "Valentin Degenne",
 		"url": "https://github.com/vdegenne"
 	},
 	"scripts": {
@@ -50,22 +48,23 @@
 		}
 	},
 	"devDependencies": {
-		"@changesets/cli": "^2.27.7",
-		"@material/web": "^2.0.0",
-		"husky": "^9.1.4",
-		"lint-staged": "^15.2.9",
-		"lit-html": "^3.2.0",
-		"prettier": "^3.3.3",
-		"typescript": "^5.5.4",
-		"vite": "^5.4.0",
-		"wireit": "^0.14.7"
+		"@changesets/cli": "^2.29.7",
+		"@material/web": "^2.4.0",
+		"husky": "^9.1.7",
+		"lint-staged": "^16.2.4",
+		"lit-html": "^3.3.1",
+		"prettier": "^3.6.2",
+		"typescript": "^5.9.3",
+		"vite": "^7.1.10",
+		"wireit": "^0.14.12"
 	},
 	"peerDependencies": {
-		"@material/web": "2.x",
+		"@material/web": "2.4.0",
 		"lit-html": "^3.0.0"
 	},
 	"files": [
-		"lib",
-		"screenshot.png"
+		"./lib",
+		"./screenshot.png",
+		"./types.d.ts"
 	]
 }
