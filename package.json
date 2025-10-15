@@ -1,7 +1,7 @@
 {
 	"name": "material-3-prompt-dialog",
 	"type": "module",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"description": "MWC 3 prompt dialog utility helpers",
 	"license": "MIT",
 	"exports": {
@@ -65,6 +65,7 @@
 	"files": [
 		"./lib",
 		"./screenshot.png",
+		"./tsconfig.json",
 		"./types.d.ts"
 	]
 }
