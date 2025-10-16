@@ -1,63 +1,163 @@
-import {type MdDialog} from '@material/web/dialog/dialog.js';
-import {html, render} from 'lit-html';
-import {createRef, ref} from 'lit-html/directives/ref.js';
+import {type MdDialog} from '@material/web/dialog/dialog.js'
+import {html, render} from 'lit-html'
+import {ifDefined} from 'lit-html/directives/if-defined.js'
+import {createRef, ref} from 'lit-html/directives/ref.js'
+import {styleMap} from 'lit-html/directives/style-map.js'
+import {until} from 'lit-html/directives/until.js'
+import {literal, html as staticHtml} from 'lit-html/static.js'
+import type {DialogButton, DialogOptions} from './types.js'
 
 export class DialogBuilder {
-	#o: DialogOptions;
-	#dialogRef = createRef<MdDialog>();
+	#o: DialogOptions
+	#dialogRef = createRef<MdDialog>()
+
+	#initialRenderPWR = Promise.withResolvers<void>()
+	get initialRenderComplete() {
+		return this.#initialRenderPWR.promise
+	}
 
 	get dialog() {
-		return this.#dialogRef.value;
+		return this.#dialogRef.value
 	}
 
 	constructor(options?: Partial<DialogOptions>) {
 		this.#o = {
+			quick: false,
 			blockScrimClick: false,
 			blockEscapeKey: false,
+			preventCancel: false,
 			content: '',
-			confirmButton: undefined,
-			cancelButton: {},
-			styles: undefined,
+			confirmButton: 'Ok',
+			cancelButton: undefined,
+			style: undefined,
 			headline: undefined,
 			onDialogReady: undefined,
 			...options,
-		};
+		}
 
-		const container = document.createElement('div');
-		document.body.appendChild(container);
+		const container = document.createElement('div')
+		document.body.appendChild(container)
 
 		render(
 			html`<!---->
-				<md-dialog ${ref(this.#dialogRef)}>
+				<md-dialog
+					${ref(this.#dialogRef)}
+					?quick="${this.#o.quick}"
+					style="${ifDefined(
+						this.#o.style ? styleMap(this.#o.style) : undefined,
+					)}"
+					@cancel="${(e: Event) => {
+						// returnValue = ''
+						if (this.#o.preventCancel) {
+							e.preventDefault()
+							// TODO: <dialog> default behavior closes on 2 escape key presses.
+						}
+					}}"
+					@closed=${() => {
+						container.remove()
+					}}
+				>
 					<!-- headline -->
 					${this.#renderHeadline()}
 					<!-- content -->
-					<form slot="content" method="dialog" id="form">
-						${typeof this.#o.content !== 'function'
-							? this.#o.content
-							: this.#o.content(this.dialog)}
-					</form>
+					<div slot="content">${this.#renderContent()}</div>
 					<!-- actions -->
+					${this.#renderActions()}
 				</md-dialog>
 				<!----> `,
 			container,
-		);
+		)
+
+		this.dialog.updateComplete.then(() => this.#postInitialRender())
 	}
-	#postInitialRender() {}
+	#postInitialRender() {
+		this.#initialRenderPWR.resolve()
+	}
 
 	#renderHeadline() {
-		if (!this.#o.headline) return;
-		return html`<div slot="headline">${this.#o.headline}</div>`;
+		if (!this.#o.headline) return
+		return html`<div slot="headline">${this.#o.headline}</div>`
 	}
 
 	#renderContent() {
-		if (typeof this.#o.content === 'function') {
+		const render = async () => {
+			await this.initialRenderComplete
+			if (typeof this.#o.content === 'function') {
+				return this.#o.content(this.dialog)
+			} else {
+				return this.#o.content
+			}
 		}
+		return until(render())
 	}
 
-	#renderActions() {}
+	#renderActions() {
+		return this.#o.confirmButton !== undefined ||
+			this.#o.cancelButton !== undefined
+			? html`<!-- -->
+					<div slot="actions">
+						${this.#renderButton(
+							this.#o.cancelButton !== undefined
+								? typeof this.#o.cancelButton === 'string'
+									? {label: this.#o.cancelButton}
+									: {label: 'Cancel', ...this.#o.cancelButton}
+								: undefined,
+						)}
+						${this.#renderButton(
+							this.#o.confirmButton !== undefined
+								? typeof this.#o.confirmButton === 'string'
+									? {label: this.#o.confirmButton}
+									: {label: 'Confirm', ...this.#o.confirmButton}
+								: undefined,
+						)}
+					</div>
+					<!-- -->`
+			: null
+	}
+	#renderButton(options: Partial<DialogButton> | string | undefined) {
+		if (options === undefined) {
+			return null
+		}
+		const _o: DialogButton = {
+			callback: (dialog) => dialog.close(),
+			label: 'Undefined',
+			styles: undefined,
+			variant: 'md-text-button',
+		}
+
+		if (typeof options === 'string') {
+			_o.label = options
+		} else {
+			Object.assign(_o, options)
+		}
+
+		const tagname = (() => {
+			switch (_o.variant) {
+				case 'md-text-button':
+					return literal`md-text-button`
+				case 'md-filled-button':
+					return literal`md-filled-button`
+				case 'md-filled-tonal-button':
+					return literal`md-filled-tonal-button`
+				case 'md-elevated-button':
+					return literal`md-elevated-button`
+				default:
+					return literal`md-text-button`
+			}
+		})()
+
+		// const value = _o.returnValue !== undefined ? _o.returnValue : _o.label
+
+		return staticHtml`
+			<${tagname}
+				@click=${ifDefined(_o.callback ? () => _o.callback(this.dialog) : undefined)}
+			>
+				${_o.label}
+			</${tagname}>
+		`
+	}
 
 	show() {
-		this.dialog.show();
+		this.dialog.show()
 	}
 }
