@@ -1,7 +1,7 @@
 {
 	"name": "material-3-prompt-dialog",
 	"type": "module",
-	"version": "1.0.4",
+	"version": "1.0.5",
 	"description": "MWC 3 prompt dialog utility helpers",
 	"license": "MIT",
 	"exports": {
@@ -49,17 +49,17 @@
 	},
 	"devDependencies": {
 		"@changesets/cli": "^2.29.7",
-		"@material/web": "^2.4.0",
+		"@material/web": "^2.4.1",
 		"husky": "^9.1.7",
-		"lint-staged": "^16.2.4",
+		"lint-staged": "^16.2.6",
 		"lit-html": "^3.3.1",
 		"prettier": "^3.6.2",
 		"typescript": "^5.9.3",
-		"vite": "^7.1.10",
+		"vite": "^7.1.12",
 		"wireit": "^0.14.12"
 	},
 	"peerDependencies": {
-		"@material/web": "2.4.0",
+		"@material/web": "^2.4.0",
 		"lit-html": "^3.0.0"
 	},
 	"files": [
